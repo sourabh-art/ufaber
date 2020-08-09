@@ -1,0 +1,58 @@
+{% include "base.html" %}
+{% block content %}
+<div class="container">
+<form action="{% url 'home:projectadded' %}"  method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Project Name</label>
+        <input type="text" name="name" placeholder="Enter Project name" required>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Description</label>
+        <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3" required></textarea>
+    </div>
+    <div class="row">
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Start Date</label>
+        <input class="stdt"  name="stdt" type="date" placeholder="Enter Project name" required>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlInput1">End Date</label>
+        <input name="enddt" class="enddt" type="date" placeholder="Enter Project name" required>
+    </div>
+    <div class="form-group">
+
+        <input name="days" class="days" type="hidden" placeholder="Enter Project name" required>
+    </div>
+   
+    </div>
+    <h2 id="numdays"></h2>
+    <div class="form-group">
+        <label for="exampleFormControlFile1">Upload A Avtar</label>
+        <input type="file" name="photo" class="form-control-file" id="exampleFormControlFile1" required>
+    </div>
+    <button type="submit">Add Project</button>
+</form>
+</div>
+<script>
+$(".enddt").change(function(){
+        stdt=$('.stdt').val()
+        enddt=$(".enddt").val(); 
+        if (stdt == ""){
+        $(".enddt").val("");
+        alert("Enter Start Date First")
+        }else{
+         
+        const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+        const firstDate = new Date(stdt);
+        const secondDate = new Date(enddt);
+
+        const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay)); 
+        $(".numdays").text("Duration"+diffDays+" Days");
+        $(".days").val(diffDays);
+        }
+    })
+
+
+</script>
+{% endblock content %}

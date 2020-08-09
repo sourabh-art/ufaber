@@ -1,0 +1,33 @@
+{% include "base.html" %}
+{% block content %}
+<div class="container">
+  <div class="row">
+{% for i in parm %}
+        <div class="card-group">
+        <div class="card border-primary mb-3" style="width: 18rem;">
+            <img src="{{i.photo}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Name:{{i.name}}</h5>
+              
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Start Date:{{i.startdate}}</li>
+              <li class="list-group-item">End Date:{{i.enddate}}</li>
+           <li class="list-group-item">Duration: {{i.duration}}</li>
+           <p class="card-text">Description:{{i.description}}</p>
+            </ul>
+            <div class="card-body">
+              <a href="{% url 'home:project' project_id=i.id %}" class="card-link">View Project</a>
+              {% comment %} <a href="#" class="card-link">Another link</a> {% endcomment %}
+            </div>
+          </div>
+          </div>
+
+
+
+
+{% endfor %}
+</div>
+</div>
+
+ {% endblock  %}

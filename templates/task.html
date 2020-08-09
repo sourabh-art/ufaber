@@ -1,0 +1,97 @@
+
+{% include "base.html" %}
+{% block content %}
+<div class="real" style="text-align: center;">
+  
+    <h1>Name:{{task.name}}</h1>
+    <h3>Description:{{task.description}}</h3>
+   
+        <p>Start Date:{{task.startdate}}</p>
+        <p>End Date:{{task.enddate}}</p>
+    
+        <p>Duration :{{task.duration}} Days</p>
+        <p>Assigned To :{{task.asign_to}} Days</p>
+        
+        <a  class="edit_prjct pull-right">Edit Project</a> 
+        <a  class="cncl">Cencil</a> 
+        <br>
+        <br>
+        <br>
+</div>
+<div class="container">
+<div class="edit">
+
+       <form action="{% url 'home:taskedit' task_id=task.id %}"  method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Project Name</label>
+        <input type="text" name="name" placeholder="Enter Project name"  value="{{task.name}}" required>
+    </div>
+    
+    <div class="row">
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Start Date</label>
+        <input class="stdt"  name="stdt" type="date" placeholder="Enter Project name" value="{{task.startdate}}" required>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlInput1">End Date</label>
+        <input name="enddt" class="enddt" type="date" placeholder="Enter Project name" value="{{task.enddate}}" required>
+    </div>
+    <div class="form-group">
+       
+        <input name="days" class="days" type="hidden" placeholder="Enter Project name" value="{{task.duration}}" required>
+    </div>
+    <div class="form-group">
+       
+        <input name="project" class="days" type="hidden" placeholder="Enter Project name" value="{{task.project}}" required>
+    </div>
+    <h2 class="numdays"></h2>
+     </div>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Description</label>
+        <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3"  required>{{task.description}}</textarea>
+    </div>
+   
+   
+     <div class="form-group">
+        <label for="nddt_task">Assign To</label>
+        {% comment %} <input   type="text" placeholder="Enter Whome To Assign"  required> {% endcomment %}
+        <select class="form-control" name="assign" id="exampleFormControlSelect1">
+            <option value="sourabh">sourabh</option>
+            <option value="ashutosh">ashutosh</option>
+            <option value="gourab">gourab</option>
+           
+    </select>
+    </div>
+    
+    <button type="submit">Edit Task</button>
+</form>
+  
+  
+</div>
+</div>
+<script>
+    $(document).ready(function(){
+       
+    $(".edit").hide();
+    $(".real").show();
+    $(".cncl").hide()
+    $(".addtask").hide()
+    $(".btn2").hide()
+    
+    $(".edit_prjct").click(function () {
+        $(".edit").show();
+        $(".real").hide(); 
+        $(".cncl").show()
+        $(".edit_prjct").hide()
+    })
+    $(".cncl").click(function () {
+        $(".edit").hide();
+        $(".real").show();
+        $(".cncl").hide() ;
+        $(".edit_prjct").show()
+
+    })
+})
+</script>
+{% endblock  %}

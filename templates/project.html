@@ -1,0 +1,231 @@
+{% include "base.html" %}
+{% block content %}
+<img src="{{project.photo}}" class="card-img-top" style="border-radius: 50%;  height: 200px; ">
+<div class="container" >
+  
+    <div class="real" style="text-align: center;">
+  
+    <h1>Name:{{project.name}}</h1>
+    <h3>Description:{{project.description}}</h3>
+   
+        <p>Start Date:{{project.startdate}}</p>
+        <p>End Date:{{project.enddate}}</p>
+    
+        <p>Duration :{{project.duration}}</p>
+        {% if task == "[]" %}
+        <p>No Task Created</p>
+        {% else %}
+        <table class="table">
+            
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Project</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col">Assigned To</th>
+                        <th scope="col">View</th>
+                       
+        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in task %}
+                    <tr>
+                        <th>{{i.name}}</th>
+                        <th>{{i.project}}</th>
+                        <th>{{i.startdate}}</th>
+                        <th>{{i.enddate}}</th>
+                        <th>{{i.asign_to}}</th>
+                        <th><a href="{% url 'home:task' project_id=i.project task_id=i.id %}" class="card-link">View</a></th>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+               
+                
+        </table>
+        {% endif %}
+        <button type="button" class="btn btn-primary btn1">Add Task</button>
+        <button type="button" class="btn btn-warning btn2">Cencil</button>
+        <br>
+        <br>
+        <br>
+    
+    
+    
+    <div class="addtask">
+
+<form action="{% url 'home:taskadd'  %}"  method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Project Name</label>
+        <input type="text" name="name" placeholder="Enter Project name"  required>
+    </div>
+    
+    
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Start Date</label>
+        <input class="stdt"  name="stdt" type="date" placeholder="Enter Task Start Date"  required>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlInput1">End Date</label>
+        <input name="enddt" class="enddt" type="date" placeholder="Enter Task Start Date"  required>
+    </div>
+     <div class="form-group">
+        {% comment %} <label for="nddt_task">Assign To</label> {% endcomment %}
+        {% comment %} <input   type="text" placeholder="Enter Whome To Assign"  required> {% endcomment %}
+        <select class="form-control" name="assign" id="exampleFormControlSelect1">
+            <option value="sourabh">sourabh</option>
+            <option value="ashutosh">ashutosh</option>
+            <option value="gourab">gourab</option>
+           
+    </select>
+    </div>
+    </div>
+    <div class="form-group">
+       
+        <input name="days" class="days" type="hidden" required>
+    </div>
+    <div class="form-group">
+       
+        <input name="project" value="{{project.id}}" type="hidden" required>
+        <input name="project_name" value="{{project.name}}" type="hidden" required>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Description</label>
+         <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="1"  required></textarea>
+    </div>
+   
+   
+    
+    <h2 class="numdays"></h2>
+  
+    <button class="btn btn-primary" type="submit">Add Task</button>
+    </div>
+</form>
+  
+
+  </div>
+        
+
+
+
+
+
+
+        
+    </div>
+
+ <a  class="edit_prjct btn btn-primary">Edit Project</a> 
+ <a  class="cncl btn btn-warning">Cencil</a> 
+   <div class="container"> 
+ <div class="edit">
+
+    <form action="{% url 'home:projectedit' project_id=project.id %}"  method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Project Name</label>
+        <input type="text" name="name" placeholder="Enter Project name"  value="{{project.name}}" required>
+    </div>
+    
+    <div class="row">
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Start Date</label>
+        <input class="stdt"  name="stdt" type="date" placeholder="Enter Project name" value="{{project.startdate}}" required>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlInput1">End Date</label>
+        <input name="enddt" class="enddt" type="date" placeholder="Enter Project name" value="{{project.enddate}}" required>
+    </div>
+    <div class="form-group">
+       
+        <input name="days" class="days" type="hidden" placeholder="Enter Project name" value="{{project.duration}}" required>
+    </div>
+    <h2 class="numdays"></h2>
+     </div>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Description</label>
+        <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3"  required>{{project.description}}</textarea>
+    </div>
+   
+   
+    
+    <div class="form-group">
+        <label for="exampleFormControlFile1">Example file input</label>
+        <input type="file" name="photo" class="form-control-file" id="exampleFormControlFile1" required>
+    </div>
+    <button type="submit">Add Project</button>
+</form>
+  
+  
+    </div>
+
+</div>
+</div> 
+
+<script>
+
+$(document).ready(function(){
+    $(".edit").hide();
+    $(".real").show();
+    $(".cncl").hide()
+    $(".addtask").hide()
+    $(".btn2").hide()
+    
+    $(".edit_prjct").click(function () {
+        $(".edit").show();
+        $(".real").hide(); 
+        $(".cncl").show()
+        $(".edit_prjct").hide()
+    })
+    $(".cncl").click(function () {
+        $(".edit").hide();
+        $(".real").show();
+        $(".cncl").hide() ;
+        $(".edit_prjct").show()
+
+    })
+    $(".btn1").click(function () {
+       
+        $(".btn2").show();
+        $(".btn1").hide() ;
+        $(".addtask").show()
+        
+
+    })
+    $(".btn2").click(function () {
+       
+        $(".btn1").show();
+        $(".btn2").hide() ;
+        $(".addtask").hide()
+        
+
+    })
+    $(".enddt").change(function(){
+
+            stdt=$('.stdt').val()
+            enddt=$(".enddt").val(); 
+            if (stdt == ""){
+            $(".enddt").val("");
+            alert("Enter Start Date First")
+            }else{
+             
+            const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+            const firstDate = new Date(stdt);
+            const secondDate = new Date(enddt);
+    
+            const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay)); 
+            $(".numdays").text("Duration"+diffDays+" Days");
+            $(".days").val(diffDays);
+            }
+        })
+
+
+
+
+})
+</script>
+
+{% endblock  %}
